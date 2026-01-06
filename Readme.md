@@ -25,7 +25,7 @@ flowchart TD
 This tool reads the environment variables set in your client. So please declare them in advance.
 
 ```bash
-$ export OPENAI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+$ export OPENAI_API_KEY="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 $ export BASE_URL="https://xxxxxxxxxx.openai.azure.com/openai/v1/"
 $ export MODEL_NAME="gpt-x.x"
 ```
