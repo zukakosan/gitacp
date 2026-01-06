@@ -1,5 +1,5 @@
 # What's gitacp
-"acp" stands for add, commit, push which are the repetitive flow you do in handling projects in GitHub. Doing them respectively is crucial if you belong to team projects but not necessary for private projects. From my standpoint, I mostly use git for technical blogging, PoCs, personal developments that don't require a strict management.
+"acp" stands for add, commit, push which are the repetitive commands you do in handling projects in GitHub. Doing them respectively is crucial if you belong to team projects but not necessary for private projects. From my standpoint, I mostly use git for technical blogging, PoCs, personal developments that don't require a strict management.
 
 To be able to automate the flow, I integrated AI for generating concise commit messages with diff. 
 
