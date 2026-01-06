@@ -50,9 +50,6 @@ func main() {
 	}
 	fmt.Println(push)
 	_ = push
-
-	// head := exec.Command("git", "diff")
-	// fmt.Println(head.Output())
 }
 
 func gitAdd(paths ...string) (string, error) {
