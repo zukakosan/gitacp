@@ -12,7 +12,8 @@ import (
 )
 
 func main() {
-	add, err := gitAddAll()
+	paths := os.Args[1:]
+	add, err := gitAdd(paths...)
 	if err != nil {
 		fmt.Println("Error adding changes:", err)
 		os.Exit(1)
@@ -54,8 +55,9 @@ func main() {
 	// fmt.Println(head.Output())
 }
 
-func gitAddAll() (string, error) {
-	cmd := exec.Command("git", "add", ".")
+func gitAdd(paths ...string) (string, error) {
+	args := append([]string{"add"}, paths...)
+	cmd := exec.Command("git", args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return "", fmt.Errorf("failed to add changes: %w", err)
