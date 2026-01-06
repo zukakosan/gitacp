@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 testparams.txt
 gitacp
 gitacp.exe
 *.exe
+=======
+# Ignored files
+testparams.txt
+>>>>>>> 9e830d285a727eb3c2ccad729a1f73143c1f7eb6
