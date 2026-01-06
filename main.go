@@ -13,6 +13,15 @@ import (
 
 func main() {
 	paths := os.Args[1:]
+
+	pull, err := gitPull()
+	if err != nil {
+		fmt.Println("Error pulling changes:", err)
+		fmt.Println(pull) // エラー詳細を表示
+		os.Exit(1)
+	}
+	fmt.Println(pull)
+
 	add, err := gitAdd(paths...)
 	if err != nil {
 		fmt.Println("Error adding changes:", err)
@@ -53,6 +62,21 @@ func main() {
 
 	// head := exec.Command("git", "diff")
 	// fmt.Println(head.Output())
+}
+
+func gitPull() (string, error) {
+	branch := exec.Command("git", "branch", "--show-current")
+	branchOutput, err := branch.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("failed to get current branch: %w", err)
+	}
+	branchName := strings.TrimSpace(string(branchOutput))
+	cmd := exec.Command("git", "pull", "origin", branchName)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return string(output), fmt.Errorf("failed to pull changes: %w", err)
+	}
+	return string(output), nil
 }
 
 func gitAdd(paths ...string) (string, error) {
