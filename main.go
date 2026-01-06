@@ -11,7 +11,19 @@ import (
 	"github.com/openai/openai-go/v3/option"
 )
 
+const (
+	ExitSuccess     = 0 // 成功
+	ExitPullError   = 1 // pull失敗
+	ExitAddError    = 2 // add失敗
+	ExitDiffError   = 3 // diff取得失敗
+	ExitAIError     = 4 // AI生成失敗
+	ExitCommitError = 5 // commit失敗
+	ExitPushError   = 6 // push失敗
+	ExitEnvError    = 7 // 環境変数エラー
+)
+
 func main() {
+
 	paths := os.Args[1:]
 
 	pull, err := gitPull()
@@ -25,7 +37,7 @@ func main() {
 	add, err := gitAdd(paths...)
 	if err != nil {
 		fmt.Println("Error adding changes:", err)
-		os.Exit(1)
+		os.Exit(2)
 	}
 	// fmt.Println(add)
 	_ = add
@@ -33,21 +45,21 @@ func main() {
 	diff, err := getGitDiff()
 	if err != nil {
 		fmt.Println("Error getting git diff:", err)
-		os.Exit(1)
+		os.Exit(3)
 	}
 	// fmt.Println(diff)
 
 	commitMsg, err := generateCommitMessage(diff)
 	if err != nil {
 		fmt.Println("Error generating commit message:", err)
-		os.Exit(1)
+		os.Exit(4)
 	}
 	fmt.Println("Generated Commit Message:", commitMsg)
 
 	commit, err := gitCommit(commitMsg)
 	if err != nil {
 		fmt.Println("Error committing changes:", err)
-		os.Exit(1)
+		os.Exit(5)
 	}
 	fmt.Println(commit)
 	_ = commit
@@ -55,7 +67,7 @@ func main() {
 	push, err := gitPush()
 	if err != nil {
 		fmt.Println("Error pushing changes:", err)
-		os.Exit(1)
+		os.Exit(6)
 	}
 	fmt.Println(push)
 	_ = push
@@ -132,7 +144,7 @@ func generateCommitMessage(diff string) (string, error) {
 	)
 	if apiKey == "" || baseURL == "" || modelName == "" {
 		fmt.Println("Error: At least one environment variable is not set")
-		os.Exit(1)
+		os.Exit(7)
 	}
 	prompt := fmt.Sprintf(`
 	# Task
