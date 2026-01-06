@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/openai/openai-go/v3"
 	"github.com/openai/openai-go/v3/option"
@@ -86,7 +87,8 @@ func gitPush() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to get current branch: %w", err)
 	}
-	cmd := exec.Command("git", "push", "origin", string(branchOutput))
+	branchName := strings.TrimSpace(string(branchOutput))
+	cmd := exec.Command("git", "push", "origin", branchName)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return "", fmt.Errorf("failed to push changes: %w", err)
