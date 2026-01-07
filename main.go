@@ -11,6 +11,12 @@ import (
 	"github.com/openai/openai-go/v3/option"
 )
 
+// PowerShell Support
+func init() {
+	// 標準出力を即座にフラッシュするように設定
+	os.Stdout.Sync()
+}
+
 const (
 	ExitSuccess     = 0 // 成功
 	ExitPullError   = 1 // pull失敗
@@ -23,6 +29,14 @@ const (
 )
 
 func main() {
+	// 引数チェックとヘルプ表示
+	if len(os.Args) > 1 && (os.Args[1] == "--help" || os.Args[1] == "-h") {
+		helpText := "Git Auto Commit Tool\n" +
+			"Usage: gitacp [file1 file2 ...]\n" +
+			"A tool to automate git commit messages using AI.\n"
+		fmt.Println(helpText)
+		return
+	}
 
 	paths := os.Args[1:]
 
