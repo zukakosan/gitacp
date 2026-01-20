@@ -91,12 +91,27 @@ func main() {
 }
 
 func gitPull() (string, error) {
+	// カレントブランチ名を取得
 	branch := exec.Command("git", "branch", "--show-current")
 	branchOutput, err := branch.CombinedOutput()
 	if err != nil {
 		return "", fmt.Errorf("failed to get current branch: %w", err)
 	}
 	branchName := strings.TrimSpace(string(branchOutput))
+
+	// リモートブランチの存在を確認
+	// git ls-remote --heads <branchName> は対象のブランチのコミットのハッシュ値を返すので、存在しない場合は空文字列になる
+	checkRemote := exec.Command("git", "ls-remote", "--heads", "origin", branchName)
+	remoteOutput, err := checkRemote.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("failed to check remote branch: %w", err)
+	}
+
+	// リモートブランチが存在しない場合はスキップ
+	if len(strings.TrimSpace(string(remoteOutput))) == 0 {
+		return fmt.Sprintf("Remote branch 'origin/%s' does not exist. Skipping pull.", branchName), nil
+	}
+
 	cmd := exec.Command("git", "pull", "origin", branchName)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
